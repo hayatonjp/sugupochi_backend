@@ -162,7 +162,7 @@ polls.post('/:uuid/vote', async (c) => {
     const body = await c.req.json();
 
     // 必要な値を取得
-    const poll_id = uuid;
+    const poll_uuid = uuid;
     const poll_option_id = body.poll_option_id;
 
     // generateVoterIdentifier: IP, Accept-Language, Accept-Encoding, Sec-CH-UA, Sec-CH-UA-Platform, Sec-CH-UA-Mobile, 5分単位のタイムスタンプ
@@ -204,9 +204,9 @@ polls.post('/:uuid/vote', async (c) => {
         try {
             await db
                 .prepare(
-                    `INSERT INTO votes (poll_id, poll_option_id, voter_identifier, created_at) VALUES (?, ?, ?, datetime('now'))`
+                    `INSERT INTO votes (poll_uuid, poll_option_id, voter_identifier, created_at) VALUES (?, ?, ?, datetime('now'))`
                 )
-                .bind(poll_id, poll_option_id, voter_identifier)
+                .bind(poll_uuid, poll_option_id, voter_identifier)
                 .run();
         } catch (err) {
             console.error(err);

@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "sugupochi_backend",
   "main": "src/index.ts",
-  "compatibility_date": "2025-10-16"
+  "compatibility_date": "2025-10-16",
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
@@ -21,13 +21,13 @@
   //     "bucket_name": "my-bucket"
   //   }
   // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sugupochi_db",
+      "database_id": "93639124-9549-4f4d-889e-67f94b2a46e4"
+    }
+  ],
   // "ai": {
   //   "binding": "AI"
   // },

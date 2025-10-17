@@ -15,7 +15,7 @@ type Poll = {
 
 type PollOption = {
     id: number;
-    poll_id: number;
+    poll_uuid: number;
     text: string;
     order: number;
     created_at: string;
@@ -24,7 +24,7 @@ type PollOption = {
 
 type Vote = {
     id: number;
-    poll_id: number;
+    poll_uuid: number;
     poll_option_id: number;
     voter_identifier: string;
     created_at: string;
@@ -45,8 +45,8 @@ export const getPollByUuid = async (
 ): Promise<Poll | null> => {
     // 1. 実行したい3つのクエリを準備する
     const pollQuery = db.prepare('SELECT * FROM polls WHERE uuid = ?').bind(uuid);
-    const optionsQuery = db.prepare('SELECT * FROM poll_options WHERE poll_id = ?').bind(uuid);
-    const votesQuery = db.prepare('SELECT * FROM votes WHERE poll_id = ?').bind(uuid);
+    const optionsQuery = db.prepare('SELECT * FROM poll_options WHERE poll_uuid = ?').bind(uuid);
+    const votesQuery = db.prepare('SELECT * FROM votes WHERE poll_uuid = ?').bind(uuid);
 
     // 2. `db.batch()` を使って3つのクエリを一度に実行
     const results = await db.batch([pollQuery, optionsQuery, votesQuery]);
@@ -89,7 +89,7 @@ export const createPollWithWithOptions = async (
 
     const optionsInserts = data.options.map((optionText) =>
         db
-            .prepare('INSERT INTO poll_options (poll_id, text) VALUES (?, ?)')
+            .prepare('INSERT INTO poll_options (poll_uuid, text) VALUES (?, ?)')
             .bind(pollUuid, optionText)
     );
 
@@ -111,7 +111,7 @@ export const getPollOptionsByPollUuid = async (
     if (!poll) {
         return [];
     }
-    const options = await db.prepare('SELECT * FROM poll_options WHERE poll_id = ? ORDER BY "order" ASC').bind(poll.id).all();
+    const options = await db.prepare('SELECT * FROM poll_options WHERE poll_uuid = ? ORDER BY "order" ASC').bind(poll.id).all();
     return options.results as PollOption[];
 };
 
