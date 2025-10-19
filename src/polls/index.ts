@@ -6,7 +6,8 @@ import { createPollWithWithOptions } from './polls.service'
 import { getPollOptionsByPollUuid } from './polls.service'
 
 type Env = {
-  DB: D1Database
+    DB: D1Database
+    FRONTEND_URL: string
 }
 
 const polls = new Hono<{ Bindings: Env }>()
@@ -76,8 +77,8 @@ polls.get('/:uuid/results', async (c) => {
     return c.json(poll)
 })
 
-// GET /api/polls/:uuid/complete
-polls.get('/:uuid/complete', async (c) => {
+// GET /api/polls/:uuid/create/complete
+polls.get('/:uuid/create/complete', async (c) => {
     const { uuid } = c.req.param();
     const poll = await getPollByUuid(c.env.DB, uuid);
 
@@ -90,7 +91,7 @@ polls.get('/:uuid/complete', async (c) => {
         poll.poll_options = await getPollOptionsByPollUuid(c.env.DB, uuid);
     }
 
-    const shareUrl = `${c.req.url.replace(/\/complete$/, '')}`; // 例: 完了画面のURLからshow画面のURLを生成
+    const shareUrl = `${c.env.FRONTEND_URL}/polls/${uuid}`
 
     return c.json({ poll, shareUrl });
 })
@@ -213,12 +214,8 @@ polls.post('/:uuid/vote', async (c) => {
             return c.json({ message: '予期せぬエラーが発生しました' }, 500);
         }
 
-        // 完了画面へリダイレクトURLを返す
-        const voteCompleteUrl = `/api/polls/${uuid}/vote/complete?voterIdentifier=${voter_identifier}`;
         return c.json(
             {
-                message: '投票が完了しました',
-                voteCompleteUrl,
                 voterIdentifier: voter_identifier,
             },
             201
