@@ -49,6 +49,9 @@ npm run cf-typegen
 - `POST /api/polls` - 新しい投票を作成
 - `GET /api/polls/{uuid}` - 投票の詳細を取得
 - `POST /api/polls/{uuid}/vote` - 投票を実行
+- `GET /api/polls/{uuid}/vote/complete` - 投票管理画面の投票の詳細を取得
+- `GET /api/polls/{uuid}/create/complete` - 投票管理画面遷移時の投票の詳細を取得
+- `GET /api/polls/{uuid}/results` - 投票結果画面遷移時の集計結果を取得
 
 ## データベーススキーマ
 
