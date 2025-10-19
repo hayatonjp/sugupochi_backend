@@ -7,7 +7,7 @@ CREATE TABLE polls (
   uuid TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   description TEXT,
-  expires_at TEXT, -- D1ではDATETIMEの代わりにTEXT型でISO文字列を保存するのが一般的
+  expires_at TEXT,
   passcode TEXT,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
