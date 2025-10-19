@@ -9,9 +9,12 @@ type Env = {
 
 const app = new Hono<{ Bindings: Env }>()
 
-app.use('/api/*', cors({
-  origin: 'http://localhost:5173',
-}))
+app.use('/api/*', async (c, next) => {
+  const corsMiddleware = cors({
+    origin: c.env.FRONTEND_URL,
+  })
+  return corsMiddleware(c, next)
+})
 
 app.route('/api/polls', polls)
 
