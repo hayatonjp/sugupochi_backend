@@ -66,26 +66,14 @@ function formatDateTime(date: Date): string {
  * 現在時刻から10分進め、秒を59秒に設定したDateオブジェクトを返します。
  */
 function getFutureTime(): string {
-    // 1. 現在時刻を取得 (now)
     const date = new Date();
-
-    // 2. JST（UTC+9）に変換
-    const jstOffset = 9 * 60; // 9時間を分に変換
-    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-    const jst = new Date(utc + (jstOffset * 60000));
-
-    // 3. 10分加算 (addMinutes(10))
-    jst.setMinutes(jst.getMinutes() + 10);
-
-    // 4. 秒を59秒に設定 (setSeconds(59))
-    jst.setSeconds(59);
-
-    // 5. YYYY-MM-DD HH:MM:SS 形式で返す
-    const year = jst.getFullYear();
-    const month = String(jst.getMonth() + 1).padStart(2, '0');
-    const day = String(jst.getDate()).padStart(2, '0');
-    const hours = String(jst.getHours()).padStart(2, '0');
-    const minutes = String(jst.getMinutes()).padStart(2, '0');
+    date.setMinutes(date.getMinutes() + 10);
+    date.setSeconds(59);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
     
     return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
