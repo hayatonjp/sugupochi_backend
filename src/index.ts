@@ -11,7 +11,9 @@ const app = new Hono<{ Bindings: Env }>()
 
 app.use('/api/*', async (c, next) => {
   const corsMiddleware = cors({
-    origin: c.env.FRONTEND_URL,
+    origin: (origin, c) => c.env.FRONTEND_URL, // 関数にすることで c.env にアクセス可能
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
   })
   return corsMiddleware(c, next)
 })
